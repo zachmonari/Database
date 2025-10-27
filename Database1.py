@@ -33,6 +33,7 @@ class MySQLDatabase:
             df = pd.DataFrame(users, columns=["ID", "Name", "Email", "Age"])
             print("\nAll Users:")
             print(df.to_string(index=False))
+            print("")
 
             return users
 
