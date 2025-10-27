@@ -1,24 +1,52 @@
 import mysql.connector
 from mysql.connector import Error
 
+class MySQLDatabase:
+    def __init__(self):
+        self.connection = None
+        self.connect()
 
-def create_connection():
-    try:
-        connection = mysql.connector.connect(
-            host='localhost',
-            database='mydatabase',
-            user='root',
-            password='Zachary4637?'  # Replace with your MySQL password
-        )
+    def connect(self):
+        try:
+            self.connection = mysql.connector.connect(
+                host='localhost',
+                database='mydatabase',
+                user='root',
+                password='Zachary4637?'  # Replace with your MySQL password
+            )
 
-        if connection.is_connected():
+
             print("Connected to MySQL database")
-            return connection
 
-    except Error as e:
-        print(f"Error: {e}")
-        return None
+        except Error as e:
+            print(f"Error: {e}")
+            return None
+
+    def read_users(self):
+        try:
+            cursor = self.connection.cursor()
+            cursor.execute("SELECT * FROM users")
+
+            users = cursor.fetchall()
+            print("\nAll Users:")
+            for user in users:
+                print(f"ID: {user[0]}, Name: {user[1]}, Email: {user[2]}, Age: {user[3]}")
+
+            return users
+
+        except Error as e:
+            print(f"Error reading users: {e}")
+
+    def close_connection(self):
+        if self.connection and self.connection.is_connected():
+            self.connection.close()
+            print("MySQL connection closed")
 
 
-# Test the connection
-connection = create_connection()
+
+
+
+if __name__ == "__main__":
+    db = MySQLDatabase()
+    db.read_users()
+    db.close_connection()
