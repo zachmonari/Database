@@ -1,5 +1,6 @@
 import mysql.connector
 from mysql.connector import Error
+import pandas as pd
 
 class MySQLDatabase:
     def __init__(self):
@@ -28,9 +29,10 @@ class MySQLDatabase:
             cursor.execute("SELECT * FROM users")
 
             users = cursor.fetchall()
+            # Convert to pandas DataFrame
+            df = pd.DataFrame(users, columns=["ID", "Name", "Email", "Age"])
             print("\nAll Users:")
-            for user in users:
-                print(f"ID: {user[0]}, Name: {user[1]}, Email: {user[2]}, Age: {user[3]}")
+            print(df.to_string(index=False))
 
             return users
 
